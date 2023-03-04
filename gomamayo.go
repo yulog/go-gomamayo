@@ -33,19 +33,20 @@ func tokenize(input string) []tokenizer.Token {
 	return t.Tokenize(input)
 }
 
-// 長音を変換する
+// 長音を変換する　TODO: 直音化？https://github.com/goark/kkconv
 func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	readingRune := []rune(reading)
 	prev := ""
 	for i := 0; i < len(readingRune); i++ {
 		current := string(readingRune[i])
-		if current == "ー" {
+		if current == "ー" && prev != "" {
 			roman := []rune(krconv.Convert(prev))
 			returnReading += vowel[string(roman[len(roman)-1])]
 		} else {
 			returnReading += current
+			prev = current
 		}
-		prev = current
+		// prev = current
 	}
 	return returnReading
 }
@@ -62,13 +63,14 @@ func Analyze(input string) (gomamayoResult GomamayoResult) {
 	vowelizedReading := []string{}
 
 	for _, token := range tokens {
-		if reading, ok := token.Reading(); ok {
-			if strings.Contains(reading, "ー") {
-				vowelizedReading = append(vowelizedReading, prolongedSoundMarkVowelize(reading))
-			} else {
-				vowelizedReading = append(vowelizedReading, reading)
-			}
+		reading, ok := token.Reading()
+		if !ok {
+			reading = token.Surface
 		}
+		if strings.Contains(reading, "ー") {
+			reading = prolongedSoundMarkVowelize(reading)
+		}
+		vowelizedReading = append(vowelizedReading, reading)
 	}
 
 	for i := 0; i < len(tokens)-1; i++ {
@@ -83,7 +85,11 @@ func Analyze(input string) (gomamayoResult GomamayoResult) {
 		_, ok2 := second.Reading()
 		reading1 := vowelizedReading[i]
 		reading2 := vowelizedReading[i+1]
-		if ok1 && ok2 {
+		// 読みがある場合のみ
+		// TODO: 読みがなくてもカナのみならそれを読みとするresultにも含めたい
+		if ok1 && ok2 || reading1 != "" && reading2 != "" {
+			// reading1 := vowelizedReading[i]
+			// reading2 := vowelizedReading[i+1]
 			minLen := min(len([]rune(reading1)), len([]rune(reading2)))
 			for j := 1; j < minLen; j++ {
 				fragment1 := string([]rune(reading1)[len([]rune(reading1))-j:])
