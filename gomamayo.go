@@ -39,14 +39,13 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	prev := ""
 	for i := 0; i < len(readingRune); i++ {
 		current := string(readingRune[i])
-		if current == "ー" && prev != "" {
-			roman := []rune(krconv.Convert(prev))
-			returnReading += vowel[string(roman[len(roman)-1])]
-		} else {
+		if current != "ー" {
 			returnReading += current
 			prev = current
+		} else if prev != "" {
+			roman := []rune(krconv.Convert(prev))
+			returnReading += vowel[string(roman[len(roman)-1])]
 		}
-		// prev = current
 	}
 	return returnReading
 }
