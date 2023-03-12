@@ -87,8 +87,6 @@ func Analyze(input string) (gomamayoResult GomamayoResult) {
 		// 読みがある場合のみ
 		// TODO: 読みがなくてもカナのみならそれを読みとするresultにも含めたい
 		if ok1 && ok2 || reading1 != "" && reading2 != "" {
-			// reading1 := vowelizedReading[i]
-			// reading2 := vowelizedReading[i+1]
 			minLen := min(len([]rune(reading1)), len([]rune(reading2)))
 			for j := 1; j < minLen; j++ {
 				fragment1 := string([]rune(reading1)[len([]rune(reading1))-j:])
