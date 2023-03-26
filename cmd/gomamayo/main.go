@@ -3,13 +3,23 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/yulog/go-gomamayo"
 
 	"github.com/urfave/cli/v2"
 )
+
+func doAnalyze(cCtx *cli.Context) error {
+	r := gomamayo.Analyze(cCtx.Args().First())
+	// fmt.Printf("%+v\n", r)
+	obj, err := json.Marshal(r)
+	if err != nil {
+		return err
+	}
+	fmt.Println(string(obj))
+	return nil
+}
 
 func main() {
 	app := &cli.App{
@@ -21,19 +31,13 @@ func main() {
 				Name:    "analyze",
 				Aliases: []string{"a"},
 				Usage:   "analyze input string",
-				Action: func(cCtx *cli.Context) error {
-					r := gomamayo.Analyze(cCtx.Args().First())
-					// fmt.Printf("%+v\n", r)
-					obj, _ := json.Marshal(r)
-					fmt.Println(string(obj))
-					return nil
-				},
+				Action:  doAnalyze,
 			},
 		},
 	}
 
-	err := app.Run(os.Args)
-	if err != nil {
-		log.Fatal(err)
+	if err := app.Run(os.Args); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
