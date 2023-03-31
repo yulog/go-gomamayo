@@ -35,10 +35,9 @@ func tokenize(input string) []tokenizer.Token {
 
 // 長音を変換する　TODO: 直音化？https://github.com/goark/kkconv
 func prolongedSoundMarkVowelize(reading string) (returnReading string) {
-	readingRune := []rune(reading)
 	prev := ""
-	for i := 0; i < len(readingRune); i++ {
-		current := string(readingRune[i])
+	for _, readingRune := range reading {
+		current := string(readingRune)
 		if current != "ー" {
 			returnReading += current
 			prev = current
