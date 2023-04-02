@@ -1,7 +1,6 @@
 package gomamayo
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -94,7 +93,7 @@ func RemoveIgnoreWord(word string) error {
 	}
 
 	if !collectionExists {
-		return errors.New("collection does not exist")
+		return nil
 	}
 
 	// 削除
