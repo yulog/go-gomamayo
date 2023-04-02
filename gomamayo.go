@@ -78,7 +78,7 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 	for _, token := range tokens {
 		reading, ok := token.Reading()
 		if !ok {
-			reading = token.Surface
+			reading = token.Surface // 読みがない場合、Surfaceを読みとする
 		}
 		if strings.Contains(reading, "ー") {
 			reading = prolongedSoundMarkVowelize(reading)
@@ -99,7 +99,7 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 		reading1 := vowelizedReading[i]
 		reading2 := vowelizedReading[i+1]
 		// 読みがある場合のみ
-		// TODO: 読みがなくてもカナのみならそれを読みとするresultにも含めたい
+		// TODO: Surfaceを読みとしたならresultにも含めたい
 		if ok1 && ok2 || reading1 != "" && reading2 != "" {
 			minLen := min(len([]rune(reading1)), len([]rune(reading2)))
 			for j := 1; j < minLen; j++ {

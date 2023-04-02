@@ -19,7 +19,10 @@ type ignoreWord struct {
 
 // 除外ワードを適用する
 func applyIgnoreWordsRemoval(input string) (string, error) {
-	db, _ := c.Open(ignoreWordDB)
+	db, err := c.Open(ignoreWordDB)
+	if err != nil {
+		return input, err
+	}
 	defer db.Close()
 
 	// collection の有無
@@ -45,11 +48,17 @@ func applyIgnoreWordsRemoval(input string) (string, error) {
 
 // AddIgnoreWord は除外ワードを追加する
 func AddIgnoreWord(word string) error {
-	db, _ := c.Open(ignoreWordDB)
+	db, err := c.Open(ignoreWordDB)
+	if err != nil {
+		return err
+	}
 	defer db.Close()
 
 	// collection の有無
-	collectionExists, _ := db.HasCollection(collection)
+	collectionExists, err := db.HasCollection(collection)
+	if err != nil {
+		return err
+	}
 
 	if !collectionExists {
 		// なければ作る
@@ -72,18 +81,24 @@ func AddIgnoreWord(word string) error {
 
 // RemoveIgnoreWord は除外ワードを削除する
 func RemoveIgnoreWord(word string) error {
-	db, _ := c.Open(ignoreWordDB)
+	db, err := c.Open(ignoreWordDB)
+	if err != nil {
+		return err
+	}
 	defer db.Close()
 
 	// collection の有無
-	collectionExists, _ := db.HasCollection(collection)
+	collectionExists, err := db.HasCollection(collection)
+	if err != nil {
+		return err
+	}
 
 	if !collectionExists {
 		return errors.New("collection does not exist")
 	}
 
 	// 削除
-	err := db.Delete(c.NewQuery(collection).Where(c.Field("surface").Eq(word)))
+	err = db.Delete(c.NewQuery(collection).Where(c.Field("surface").Eq(word)))
 	if err != nil {
 		return err
 	}
