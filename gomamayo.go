@@ -11,6 +11,10 @@ import (
 
 var vowel = map[string]string{"a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ"}
 
+type Analyzer struct {
+	IsIgnored bool
+}
+
 type GomamayoResult struct {
 	IsGomamayo bool             `json:"isGomamayo"`
 	Combo      int              `json:"combo"`
@@ -33,7 +37,9 @@ func tokenize(input string) []tokenizer.Token {
 	return t.Tokenize(input)
 }
 
-// 長音を変換する　TODO: 直音化？https://github.com/goark/kkconv
+// 長音を変換する
+//
+// TODO: 直音化？https://github.com/goark/kkconv
 func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	prev := ""
 	for _, readingRune := range reading {
@@ -49,8 +55,17 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	return returnReading
 }
 
+// New は Analyzer を作る
+func New(isIgnored bool) *Analyzer {
+	return &Analyzer{IsIgnored: isIgnored}
+}
+
 // Analyze は input がゴママヨか判定する
-func Analyze(input string) (gomamayoResult GomamayoResult) {
+func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
+	if a.IsIgnored {
+		input, _ = applyIgnoreWordsRemoval(input)
+	}
+
 	tokens := tokenize(input)
 
 	// for _, token := range tokens {

@@ -1,7 +1,7 @@
 # go-gomamayo
 
-[ゴママヨ](https://thinaticsystem.com/glossary/gomamayo)検出器のGo言語版です。[na2na-p/gomamayo-deno](https://github.com/na2na-p/gomamayo-deno)を参考にした部分的な再実装です。
-形態素解析の辞書にはIPADICを使っています。
+[ゴママヨ](https://thinaticsystem.com/glossary/gomamayo)検出器のGo言語版です。[na2na-p/gomamayo-deno](https://github.com/na2na-p/gomamayo-deno)を参考にした再実装です。
+形態素解析には[ikawaha/kagome](https://github.com/ikawaha/kagome)、辞書にはIPADICを使っています。
 
 ## Library
 
@@ -87,6 +87,19 @@ gomamayo analyze ごまマヨネーズ
 }
 ```
 
+### Usage
+
+```
+gomamayo analyze -ignore false ごまマヨネーズ
+```
+
+```
+gomamayo addIgnore サラダ
+```
+
+```
+gomamayo removeIgnore サラダ
+```
 
 ## License
 
