@@ -11,13 +11,31 @@ import (
 )
 
 func doAnalyze(cCtx *cli.Context) error {
-	r := gomamayo.Analyze(cCtx.Args().First())
+	r := gomamayo.New(cCtx.Bool("ignore")).Analyze(cCtx.Args().First())
 	// fmt.Printf("%+v\n", r)
 	obj, err := json.Marshal(r)
 	if err != nil {
 		return err
 	}
 	fmt.Println(string(obj))
+	return nil
+}
+
+func doAddIgnore(cCtx *cli.Context) error {
+	err := gomamayo.AddIgnoreWord(cCtx.Args().First())
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func doRemoveIgnore(cCtx *cli.Context) error {
+	err := gomamayo.RemoveIgnoreWord(cCtx.Args().First())
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -31,7 +49,26 @@ func main() {
 				Name:    "analyze",
 				Aliases: []string{"a"},
 				Usage:   "analyze input string",
-				Action:  doAnalyze,
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:        "ignore",
+						Usage:       "ignore word",
+						Value:       true,
+						DefaultText: "true"},
+				},
+				Action: doAnalyze,
+			},
+			{
+				Name:    "addIgnore",
+				Aliases: []string{"add"},
+				Usage:   "add ignore word",
+				Action:  doAddIgnore,
+			},
+			{
+				Name:    "removeIgnore",
+				Aliases: []string{"remove"},
+				Usage:   "remove ignore word",
+				Action:  doRemoveIgnore,
 			},
 		},
 	}
