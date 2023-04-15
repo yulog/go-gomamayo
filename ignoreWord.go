@@ -2,6 +2,7 @@ package gomamayo
 
 import (
 	"fmt"
+	"io"
 	"strings"
 
 	c "github.com/ostafen/clover/v2"
@@ -103,5 +104,34 @@ func RemoveIgnoreWord(word string) error {
 	}
 
 	fmt.Println("Remove ignore word:", word)
+	return nil
+}
+
+// ListIgnoreWord は除外ワードを一覧する
+func ListIgnoreWord(w io.Writer) error {
+	db, err := c.Open(ignoreWordDB)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// collection の有無
+	collectionExists, err := db.HasCollection(collection)
+	if err != nil {
+		return err
+	}
+
+	if !collectionExists {
+		return nil
+	}
+
+	docs, err := db.FindAll(c.NewQuery(collection))
+	if err != nil {
+		return err
+	}
+
+	for _, doc := range docs {
+		fmt.Fprintln(w, doc.Get("surface"))
+	}
 	return nil
 }
