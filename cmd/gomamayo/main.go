@@ -39,6 +39,15 @@ func doRemoveIgnore(cCtx *cli.Context) error {
 	return nil
 }
 
+func doListIgnore(cCtx *cli.Context) error {
+	err := gomamayo.ListIgnoreWord(os.Stdout)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func main() {
 	app := &cli.App{
 		Name:        "gomamayo",
@@ -69,6 +78,12 @@ func main() {
 				Aliases: []string{"remove"},
 				Usage:   "remove ignore word",
 				Action:  doRemoveIgnore,
+			},
+			{
+				Name:    "listIgnore",
+				Aliases: []string{"list"},
+				Usage:   "list ignore word",
+				Action:  doListIgnore,
 			},
 		},
 	}
