@@ -57,7 +57,7 @@ func doListIgnore(cCtx *cli.Context) error {
 }
 
 func doImportIgnore(cCtx *cli.Context) error {
-	err := gomamayo.ImportIgnoreWords("")
+	err := gomamayo.ImportIgnoreWords(cCtx.Args().First())
 	if err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ func doImportIgnore(cCtx *cli.Context) error {
 }
 
 func doExportIgnore(cCtx *cli.Context) error {
-	err := gomamayo.ExportIgnoreWords("")
+	err := gomamayo.ExportIgnoreWords(cCtx.Args().First())
 	if err != nil {
 		return err
 	}
@@ -89,7 +89,8 @@ func main() {
 						Name:        "ignore",
 						Usage:       "ignore word",
 						Value:       true,
-						DefaultText: "true"},
+						DefaultText: "true",
+					},
 				},
 				Action: doAnalyze,
 			},
