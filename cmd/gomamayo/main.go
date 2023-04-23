@@ -68,22 +68,29 @@ func main() {
 				Action: doAnalyze,
 			},
 			{
-				Name:    "addIgnore",
-				Aliases: []string{"add"},
-				Usage:   "add ignore word",
-				Action:  doAddIgnore,
-			},
-			{
-				Name:    "removeIgnore",
-				Aliases: []string{"remove"},
-				Usage:   "remove ignore word",
-				Action:  doRemoveIgnore,
-			},
-			{
-				Name:    "listIgnore",
-				Aliases: []string{"list"},
-				Usage:   "list ignore word",
-				Action:  doListIgnore,
+				Name:    "ignoreWord",
+				Aliases: []string{"ignore"},
+				Usage:   "operations for ignore word",
+				Subcommands: []*cli.Command{
+					{
+						Name:    "add",
+						Aliases: []string{"a"},
+						Usage:   "add ignore word",
+						Action:  doAddIgnore,
+					},
+					{
+						Name:    "remove",
+						Aliases: []string{"r"},
+						Usage:   "remove ignore word",
+						Action:  doRemoveIgnore,
+					},
+					{
+						Name:    "list",
+						Aliases: []string{"l"},
+						Usage:   "list ignore word",
+						Action:  doListIgnore,
+					},
+				},
 			},
 		},
 	}
