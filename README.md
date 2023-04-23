@@ -94,11 +94,11 @@ gomamayo analyze -ignore false ごまマヨネーズ
 ```
 
 ```
-gomamayo addIgnore サラダ
+gomamayo ignore add サラダ
 ```
 
 ```
-gomamayo removeIgnore サラダ
+gomamayo ignore remove サラダ
 ```
 
 ## License

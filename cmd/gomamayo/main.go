@@ -31,6 +31,14 @@ func doAddIgnore(cCtx *cli.Context) error {
 }
 
 func doRemoveIgnore(cCtx *cli.Context) error {
+	if cCtx.Bool("all") {
+		err := gomamayo.RemoveAllIgnoreWords()
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
 	err := gomamayo.RemoveIgnoreWord(cCtx.Args().First())
 	if err != nil {
 		return err
@@ -40,7 +48,25 @@ func doRemoveIgnore(cCtx *cli.Context) error {
 }
 
 func doListIgnore(cCtx *cli.Context) error {
-	err := gomamayo.ListIgnoreWord(os.Stdout)
+	err := gomamayo.ListIgnoreWords(os.Stdout)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func doImportIgnore(cCtx *cli.Context) error {
+	err := gomamayo.ImportIgnoreWords("")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func doExportIgnore(cCtx *cli.Context) error {
+	err := gomamayo.ExportIgnoreWords("")
 	if err != nil {
 		return err
 	}
@@ -82,13 +108,31 @@ func main() {
 						Name:    "remove",
 						Aliases: []string{"r"},
 						Usage:   "remove ignore word",
-						Action:  doRemoveIgnore,
+						Flags: []cli.Flag{
+							&cli.BoolFlag{
+								Name:  "all",
+								Usage: "remove all",
+							},
+						},
+						Action: doRemoveIgnore,
 					},
 					{
 						Name:    "list",
 						Aliases: []string{"l"},
 						Usage:   "list ignore word",
 						Action:  doListIgnore,
+					},
+					{
+						Name:    "import",
+						Aliases: []string{"i"},
+						Usage:   "import ignore word",
+						Action:  doImportIgnore,
+					},
+					{
+						Name:    "export",
+						Aliases: []string{"e"},
+						Usage:   "export ignore word",
+						Action:  doExportIgnore,
 					},
 				},
 			},
