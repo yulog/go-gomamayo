@@ -6,6 +6,8 @@ import (
 	"strings"
 
 	c "github.com/ostafen/clover/v2"
+	d "github.com/ostafen/clover/v2/document"
+	"github.com/ostafen/clover/v2/query"
 )
 
 const (
@@ -34,7 +36,7 @@ func applyIgnoreWordsRemoval(input string) (string, error) {
 
 	ignore := new(ignoreWord)
 
-	db.ForEach(c.NewQuery(collection), func(doc *c.Document) bool {
+	db.ForEach(query.NewQuery(collection), func(doc *d.Document) bool {
 		doc.Unmarshal(ignore)
 		if strings.Contains(input, ignore.Surface) {
 			input = strings.ReplaceAll(input, ignore.Surface, "")
@@ -66,16 +68,16 @@ func AddIgnoreWord(word string) error {
 	}
 
 	// document を作る
-	doc := c.NewDocument()
+	doc := d.NewDocument()
 	doc.Set("surface", word)
 
 	// collection に document を挿入
-	docId, err := db.InsertOne(collection, doc)
+	_, err = db.InsertOne(collection, doc)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Add ignore word:", docId, word)
+	// fmt.Println("Add ignore word:", docId, word)
 	return nil
 }
 
@@ -98,12 +100,11 @@ func RemoveIgnoreWord(word string) error {
 	}
 
 	// 削除
-	err = db.Delete(c.NewQuery(collection).Where(c.Field("surface").Eq(word)))
+	err = db.Delete(query.NewQuery(collection).Where(query.Field("surface").Eq(word)))
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Remove ignore word:", word)
 	return nil
 }
 
@@ -131,7 +132,6 @@ func RemoveAllIgnoreWords() error {
 		return err
 	}
 
-	fmt.Println("Remove all ignore word")
 	return nil
 }
 
@@ -153,7 +153,7 @@ func ListIgnoreWords(w io.Writer) error {
 		return nil
 	}
 
-	docs, err := db.FindAll(c.NewQuery(collection))
+	docs, err := db.FindAll(query.NewQuery(collection))
 	if err != nil {
 		return err
 	}
@@ -192,7 +192,6 @@ func ImportIgnoreWords(path string) error {
 		return err
 	}
 
-	fmt.Println("Import ignore word")
 	return nil
 }
 
@@ -224,6 +223,5 @@ func ExportIgnoreWords(path string) error {
 		return err
 	}
 
-	fmt.Println("Export ignore word")
 	return nil
 }

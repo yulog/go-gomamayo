@@ -1,33 +1,35 @@
 module github.com/yulog/go-gomamayo
 
-go 1.20
+go 1.21
+
+toolchain go1.21.1
 
 require (
 	github.com/goark/krconv v0.2.3
 	github.com/ikawaha/kagome-dict/ipa v1.0.10
-	github.com/ikawaha/kagome/v2 v2.9.2
-	github.com/ostafen/clover/v2 v2.0.0-alpha.2
-	github.com/urfave/cli/v2 v2.25.0
-	golang.org/x/exp v0.0.0-20230310171629-522b1b587ee0
+	github.com/ikawaha/kagome/v2 v2.9.3
+	github.com/ostafen/clover/v2 v2.0.0-alpha.3
+	github.com/urfave/cli/v2 v2.25.7
 )
 
 require (
 	github.com/cespare/xxhash v1.1.0 // indirect
-	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/dgraph-io/badger/v3 v3.2103.2 // indirect
-	github.com/dgraph-io/ristretto v0.1.0 // indirect
-	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/dgraph-io/badger/v3 v3.2103.5 // indirect
+	github.com/dgraph-io/ristretto v0.1.1 // indirect
+	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/goark/kkconv v0.3.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/glog v1.0.0 // indirect
+	github.com/golang/glog v1.1.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/flatbuffers v2.0.6+incompatible // indirect
+	github.com/google/flatbuffers v23.5.26+incompatible // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/orderedcode v0.0.1 // indirect
 	github.com/ikawaha/kagome-dict v1.0.9 // indirect
-	github.com/klauspost/compress v1.15.9 // indirect
+	github.com/klauspost/compress v1.16.7 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -35,9 +37,10 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	go.opencensus.io v0.23.0 // indirect
-	golang.org/x/net v0.0.0-20220728211354-c7608f3a8462 // indirect
-	golang.org/x/sys v0.5.0 // indirect
-	golang.org/x/text v0.8.0 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
+	go.etcd.io/bbolt v1.3.6 // indirect
+	go.opencensus.io v0.24.0 // indirect
+	golang.org/x/net v0.15.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
+	google.golang.org/protobuf v1.31.0 // indirect
 )

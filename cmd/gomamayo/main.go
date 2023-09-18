@@ -11,7 +11,7 @@ import (
 )
 
 func doAnalyze(cCtx *cli.Context) error {
-	r := gomamayo.New(cCtx.Bool("ignore")).Analyze(cCtx.Args().First())
+	r := gomamayo.New(!cCtx.Bool("disable-ignore")).Analyze(cCtx.Args().First())
 	// fmt.Printf("%+v\n", r)
 	obj, err := json.Marshal(r)
 	if err != nil {
@@ -26,6 +26,7 @@ func doAddIgnore(cCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Add ignore word:", cCtx.Args().First())
 
 	return nil
 }
@@ -36,6 +37,7 @@ func doRemoveIgnore(cCtx *cli.Context) error {
 		if err != nil {
 			return err
 		}
+		fmt.Println("Remove all ignore word")
 		return nil
 	}
 
@@ -43,6 +45,7 @@ func doRemoveIgnore(cCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Remove ignore word:", cCtx.Args().First())
 
 	return nil
 }
@@ -61,6 +64,7 @@ func doImportIgnore(cCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Import ignore word")
 
 	return nil
 }
@@ -70,6 +74,7 @@ func doExportIgnore(cCtx *cli.Context) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("Export ignore word")
 
 	return nil
 }
@@ -86,10 +91,8 @@ func main() {
 				Usage:   "analyze input string",
 				Flags: []cli.Flag{
 					&cli.BoolFlag{
-						Name:        "ignore",
-						Usage:       "ignore word",
-						Value:       true,
-						DefaultText: "true",
+						Name:  "disable-ignore",
+						Usage: "disable ignore word",
 					},
 				},
 				Action: doAnalyze,
@@ -112,7 +115,7 @@ func main() {
 						Flags: []cli.Flag{
 							&cli.BoolFlag{
 								Name:  "all",
-								Usage: "remove all",
+								Usage: "remove all ignore word",
 							},
 						},
 						Action: doRemoveIgnore,
