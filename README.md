@@ -90,7 +90,7 @@ gomamayo analyze ごまマヨネーズ
 ### Usage
 
 ```
-gomamayo analyze -ignore false ごまマヨネーズ
+gomamayo analyze --disable-ignore ごまマヨネーズ
 ```
 
 ```

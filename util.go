@@ -26,10 +26,10 @@
 
 package gomamayo
 
-import "golang.org/x/exp/constraints"
+import "cmp"
 
 // min は最小値を返す
-func min[T constraints.Ordered](s ...T) T {
+func min[T cmp.Ordered](s ...T) T {
 	var min T
 
 	if len(s) == 0 {
