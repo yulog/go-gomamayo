@@ -5,13 +5,17 @@ import (
 	"strings"
 
 	"github.com/goark/krconv"
+	ipaneologd "github.com/ikawaha/kagome-dict-ipa-neologd"
+	"github.com/ikawaha/kagome-dict/dict"
 	"github.com/ikawaha/kagome-dict/ipa"
+	"github.com/ikawaha/kagome/v2/filter"
 	"github.com/ikawaha/kagome/v2/tokenizer"
 )
 
 var vowel = map[string]string{"a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ"}
 
 type Analyzer struct {
+	SysDict   string
 	IsIgnored bool
 }
 
@@ -28,9 +32,26 @@ type GomamayoDetail struct {
 	RawResult2 tokenizer.TokenData `json:"rawResult2"`
 }
 
+// 辞書を選択する
+//
+// https://github.com/ikawaha/kagome/blob/v2/cmd/tokenize/cmd.go
+func selectDict(sysdict string) (*dict.Dict, error) {
+	switch sysdict {
+	case "ipa":
+		return ipa.Dict(), nil
+	case "neo", "neologd":
+		return ipaneologd.Dict(), nil
+	}
+	return nil, fmt.Errorf("invalid dict name, %v", sysdict)
+}
+
 // kagomeで解析する
-func tokenize(input string) []tokenizer.Token {
-	t, err := tokenizer.New(ipa.Dict(), tokenizer.OmitBosEos())
+func (a Analyzer) tokenize(input string) []tokenizer.Token {
+	d, err := selectDict(a.SysDict)
+	if err != nil {
+		panic(err)
+	}
+	t, err := tokenizer.New(d, tokenizer.OmitBosEos())
 	if err != nil {
 		panic(err)
 	}
@@ -56,8 +77,11 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 }
 
 // New は Analyzer を作る
-func New(isIgnored bool) *Analyzer {
-	return &Analyzer{IsIgnored: isIgnored}
+func New(sysdict string, isIgnored bool) *Analyzer {
+	return &Analyzer{
+		SysDict:   sysdict,
+		IsIgnored: isIgnored,
+	}
 }
 
 // Analyze は input がゴママヨか判定する
@@ -66,7 +90,14 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 		input, _ = applyIgnoreWordsRemoval(input)
 	}
 
-	tokens := tokenize(input)
+	tokens := a.tokenize(input)
+
+	posFilterAllow := filter.NewPOSFilter([]filter.POS{
+		{"名詞"},
+	}...)
+	posFilterNotAllow := filter.NewPOSFilter([]filter.POS{
+		{filter.Any, "数詞"},
+	}...)
 
 	// for _, token := range tokens {
 	// 	features := strings.Join(token.Features(), ",")
@@ -90,7 +121,8 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 		first := tokens[i]
 		second := tokens[i+1]
 
-		if first.POS()[0] != "名詞" && first.POS()[0] != "数詞" || second.Surface == first.Surface {
+		// ThinaticSystem/gomamayo.jsとna2na-p/gomamayo-denoで条件が違う…？
+		if !posFilterAllow.Match(first.POS()) || posFilterNotAllow.Match(first.POS()) || second.Surface == first.Surface {
 			continue
 		}
 
