@@ -10,8 +10,14 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+const name = "gomamayo"
+
+const version = "0.0.0"
+
+var revision = "HEAD"
+
 func doAnalyze(cCtx *cli.Context) error {
-	r := gomamayo.New(!cCtx.Bool("disable-ignore")).Analyze(cCtx.Args().First())
+	r := gomamayo.New(cCtx.String("sysdict"), !cCtx.Bool("disable-ignore")).Analyze(cCtx.Args().First())
 	// fmt.Printf("%+v\n", r)
 	obj, err := json.Marshal(r)
 	if err != nil {
@@ -93,6 +99,11 @@ func main() {
 					&cli.BoolFlag{
 						Name:  "disable-ignore",
 						Usage: "disable ignore word",
+					},
+					&cli.StringFlag{
+						Name:  "sysdict",
+						Usage: "select dict(ipa,neo)",
+						Value: "neo",
 					},
 				},
 				Action: doAnalyze,

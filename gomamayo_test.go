@@ -10,6 +10,6 @@ func FuzzAnalyze(f *testing.F) {
 		f.Add(tc)
 	}
 	f.Fuzz(func(t *testing.T, s string) {
-		New(false).Analyze(s)
+		New("ipa", false).Analyze(s)
 	})
 }
