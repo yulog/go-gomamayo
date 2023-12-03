@@ -88,6 +88,15 @@ func Cross() {
 	sh.Run("goxz", "-n", BIN, "-pv=v"+VERSION, "./cmd/gomamayo/")
 }
 
+func Bump() {
+	_, err := exec.LookPath("gobump")
+	if err != nil {
+		fmt.Println("installing gobump")
+		sh.Run("go", "install", "github.com/x-motemen/gobump/cmd/gobump@latest")
+	}
+	sh.Run("gobump", "up", "./cmd/gomamayo/")
+}
+
 func Upload() {
 	_, err := exec.LookPath("ghr")
 	if err != nil {
