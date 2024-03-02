@@ -8,6 +8,7 @@ import (
 	"github.com/ikawaha/kagome-dict/dict"
 	"github.com/ikawaha/kagome/v2/filter"
 	"github.com/ikawaha/kagome/v2/tokenizer"
+	dictlib "github.com/yulog/go-gomamayo/dict"
 )
 
 var vowel = map[string]string{"a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ"}
@@ -73,17 +74,14 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	return returnReading
 }
 
-// Deprecated: New は Analyzer を作る
-// func New(sysdict string, isIgnored bool) (*Analyzer, error) {
-// 	d, err := selectDict(sysdict)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return &Analyzer{
-// 		SysDict:   d,
-// 		IsIgnored: isIgnored,
-// 	}, nil
-// }
+// New は Analyzer を作る
+func New(dict *dictlib.Dict, isIgnored bool) *Analyzer {
+	return &Analyzer{
+		SysDict:      dict.SysDict,
+		ReadingIndex: dict.ReadingIndex,
+		IsIgnored:    isIgnored,
+	}
+}
 
 // Analyze は input がゴママヨか判定する
 func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {

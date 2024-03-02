@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/yulog/go-gomamayo"
-	"github.com/yulog/go-gomamayo/analyzer/full"
+	"github.com/yulog/go-gomamayo/dict/full"
 
 	"github.com/urfave/cli/v2"
 )
@@ -18,11 +18,11 @@ const version = "0.0.2"
 var revision = "HEAD"
 
 func doAnalyze(cCtx *cli.Context) error {
-	a, err := full.New(cCtx.String("sysdict"), !cCtx.Bool("disable-ignore"))
+	d, err := full.SelectDict(cCtx.String("sysdict"))
 	if err != nil {
 		return err
 	}
-	r := a.Analyze(cCtx.Args().First())
+	r := gomamayo.New(d, !cCtx.Bool("disable-ignore")).Analyze(cCtx.Args().First())
 	// fmt.Printf("%+v\n", r)
 	obj, err := json.Marshal(r)
 	if err != nil {
