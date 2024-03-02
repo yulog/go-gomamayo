@@ -5,9 +5,7 @@ import (
 	"strings"
 
 	"github.com/goark/krconv"
-	ipaneologd "github.com/ikawaha/kagome-dict-ipa-neologd"
 	"github.com/ikawaha/kagome-dict/dict"
-	"github.com/ikawaha/kagome-dict/ipa"
 	"github.com/ikawaha/kagome/v2/filter"
 	"github.com/ikawaha/kagome/v2/tokenizer"
 )
@@ -15,8 +13,11 @@ import (
 var vowel = map[string]string{"a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ"}
 
 type Analyzer struct {
-	SysDict   *dict.Dict
-	IsIgnored bool
+	SysDict *dict.Dict
+	// Reading()はuni系だと使えないため、各辞書のconstから持って来て利用する
+	// https://github.com/ikawaha/kagome-dict/blob/339b5b8724769ec9506e29fb5e771a9ec012784f/uni/tool/main.go#L39
+	ReadingIndex int
+	IsIgnored    bool
 }
 
 type GomamayoResult struct {
@@ -35,15 +36,15 @@ type GomamayoDetail struct {
 // 辞書を選択する
 //
 // https://github.com/ikawaha/kagome/blob/v2/cmd/tokenize/cmd.go
-func selectDict(sysdict string) (*dict.Dict, error) {
-	switch sysdict {
-	case "ipa":
-		return ipa.Dict(), nil
-	case "neo", "neologd":
-		return ipaneologd.Dict(), nil
-	}
-	return nil, fmt.Errorf("invalid dict name, %v", sysdict)
-}
+// func selectDict(sysdict string) (*dict.Dict, error) {
+// 	switch sysdict {
+// 	case "ipa":
+// 		return ipa.Dict(), nil
+// 	case "neo", "neologd":
+// 		return ipaneologd.Dict(), nil
+// 	}
+// 	return nil, fmt.Errorf("invalid dict name, %v", sysdict)
+// }
 
 // kagomeで解析する
 func (a Analyzer) tokenize(input string) []tokenizer.Token {
@@ -73,16 +74,16 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 }
 
 // Deprecated: New は Analyzer を作る
-func New(sysdict string, isIgnored bool) (*Analyzer, error) {
-	d, err := selectDict(sysdict)
-	if err != nil {
-		return nil, err
-	}
-	return &Analyzer{
-		SysDict:   d,
-		IsIgnored: isIgnored,
-	}, nil
-}
+// func New(sysdict string, isIgnored bool) (*Analyzer, error) {
+// 	d, err := selectDict(sysdict)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	return &Analyzer{
+// 		SysDict:   d,
+// 		IsIgnored: isIgnored,
+// 	}, nil
+// }
 
 // Analyze は input がゴママヨか判定する
 func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
@@ -107,7 +108,7 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 	vowelizedReading := []string{}
 
 	for _, token := range tokens {
-		reading, ok := token.Reading()
+		reading, ok := token.FeatureAt(a.ReadingIndex) // 読みを取得
 		if !ok {
 			reading = token.Surface // 読みがない場合、Surfaceを読みとする
 		}
@@ -126,15 +127,15 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 			continue
 		}
 
-		_, ok1 := first.Reading()
-		_, ok2 := second.Reading()
+		_, ok1 := first.FeatureAt(a.ReadingIndex)  // 読みを取得
+		_, ok2 := second.FeatureAt(a.ReadingIndex) // 読みを取得
 		reading1 := vowelizedReading[i]
 		reading2 := vowelizedReading[i+1]
 		// 読みがある場合のみ
 		// TODO: Surfaceを読みとしたならresultにも含めたい
 		if ok1 && ok2 || reading1 != "" && reading2 != "" {
 			minLen := min(len([]rune(reading1)), len([]rune(reading2)))
-			for j := 1; j < minLen; j++ {
+			for j := 1; j <= minLen; j++ {
 				fragment1 := string([]rune(reading1)[len([]rune(reading1))-j:])
 				fragment2 := string([]rune(reading2)[0:j])
 				if fragment1 == fragment2 {

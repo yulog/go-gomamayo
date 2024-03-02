@@ -12,24 +12,25 @@ import (
 // 辞書を選択する
 //
 // https://github.com/ikawaha/kagome/blob/v2/cmd/tokenize/cmd.go
-func selectDict(sysdict string) (*dict.Dict, error) {
+func selectDict(sysdict string) (*dict.Dict, int, error) {
 	switch sysdict {
 	case "ipa":
-		return ipa.Dict(), nil
+		return ipa.Dict(), ipa.Reading, nil
 	case "uni", "uni2":
-		return uni.Dict(), nil
+		return uni.Dict(), uni.LForm, nil
 	}
-	return nil, fmt.Errorf("invalid dict name, %v", sysdict)
+	return nil, 0, fmt.Errorf("invalid dict name, %v", sysdict)
 }
 
 // New は Analyzer を作る
 func New(sysdict string, isIgnored bool) (*gomamayo.Analyzer, error) {
-	d, err := selectDict(sysdict)
+	d, i, err := selectDict(sysdict)
 	if err != nil {
 		return nil, err
 	}
 	return &gomamayo.Analyzer{
-		SysDict:   d,
-		IsIgnored: isIgnored,
+		SysDict:      d,
+		ReadingIndex: i,
+		IsIgnored:    isIgnored,
 	}, nil
 }
