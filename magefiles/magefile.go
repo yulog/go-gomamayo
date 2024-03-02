@@ -57,11 +57,11 @@ func Install() error {
 }
 
 // Manage your deps, or running package managers.
-func InstallDeps() error {
-	fmt.Println("Installing Deps...")
-	cmd := exec.Command("go", "get", "github.com/stretchr/piglatin")
-	return cmd.Run()
-}
+// func InstallDeps() error {
+// 	fmt.Println("Installing Deps...")
+// 	cmd := exec.Command("go", "get", "github.com/stretchr/piglatin")
+// 	return cmd.Run()
+// }
 
 // Clean up after yourself
 func Clean() {
@@ -76,6 +76,18 @@ func Clean() {
 
 func ShowVersion() {
 	fmt.Println(getVersion())
+}
+
+func Credits() {
+	_, err := exec.LookPath("gocredits")
+	if err != nil {
+		fmt.Println("installing gocredits")
+		sh.Run("go", "install", "github.com/Songmu/gocredits")
+	}
+	s, _ := sh.Output("gocredits", ".")
+	f, _ := os.Create("CREDITS")
+	f.WriteString(s)
+	defer f.Close()
 }
 
 func Cross() {
@@ -94,7 +106,7 @@ func Bump() {
 		fmt.Println("installing gobump")
 		sh.Run("go", "install", "github.com/x-motemen/gobump/cmd/gobump@latest")
 	}
-	sh.Run("gobump", "up", "./cmd/gomamayo/")
+	sh.Run("gobump", "up", "-w", "./cmd/gomamayo/")
 }
 
 func Upload() {

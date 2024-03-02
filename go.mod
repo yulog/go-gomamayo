@@ -1,16 +1,19 @@
 module github.com/yulog/go-gomamayo
 
-go 1.21
+go 1.22
 
-toolchain go1.21.1
+toolchain go1.22.0
 
 require (
 	github.com/goark/krconv v0.2.3
 	github.com/ikawaha/kagome-dict/ipa v1.0.10
-	github.com/ikawaha/kagome/v2 v2.9.4
+	github.com/ikawaha/kagome-dict/uni v1.1.9
+	github.com/ikawaha/kagome/v2 v2.9.5
 	github.com/ostafen/clover/v2 v2.0.0-alpha.3
-	github.com/urfave/cli/v2 v2.26.0
+	github.com/urfave/cli/v2 v2.27.1
 )
+
+require github.com/ikawaha/kagome-dict-uni3 v0.0.2
 
 require (
 	github.com/cespare/xxhash v1.1.0 // indirect
@@ -32,16 +35,16 @@ require (
 	github.com/klauspost/compress v1.17.4 // indirect
 	github.com/magefile/mage v1.15.0
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/rivo/uniseg v0.4.4 // indirect
+	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
+	github.com/xrash/smetrics v0.0.0-20231213231151-1d8dd44e695e // indirect
 	go.etcd.io/bbolt v1.3.8 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
 )

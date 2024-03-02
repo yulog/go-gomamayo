@@ -1,4 +1,4 @@
-package gomamayo
+package lite
 
 import (
 	"testing"
@@ -10,6 +10,7 @@ func FuzzAnalyze(f *testing.F) {
 		f.Add(tc)
 	}
 	f.Fuzz(func(t *testing.T, s string) {
-		New("ipa", false).Analyze(s)
+		a, _ := New("ipa", false)
+		a.Analyze(s)
 	})
 }

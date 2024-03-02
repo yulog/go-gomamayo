@@ -1,7 +1,10 @@
 # go-gomamayo
 
 [ゴママヨ](https://thinaticsystem.com/glossary/gomamayo)検出器のGo言語版です。[na2na-p/gomamayo-deno](https://github.com/na2na-p/gomamayo-deno)を参考にした再実装です。
-形態素解析には[ikawaha/kagome](https://github.com/ikawaha/kagome)、辞書にはIPADICを使っています。
+形態素解析には[ikawaha/kagome](https://github.com/ikawaha/kagome)を使っています。辞書にはIPADIC、NEologd、unidic、unidic3を使えます。
+
+> [!WARNING]
+> 辞書を含むためファイルサイズが大きいです。(700MB+)
 
 ## Library
 

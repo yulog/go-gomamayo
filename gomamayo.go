@@ -15,7 +15,7 @@ import (
 var vowel = map[string]string{"a": "ア", "i": "イ", "u": "ウ", "e": "エ", "o": "オ"}
 
 type Analyzer struct {
-	SysDict   string
+	SysDict   *dict.Dict
 	IsIgnored bool
 }
 
@@ -47,11 +47,7 @@ func selectDict(sysdict string) (*dict.Dict, error) {
 
 // kagomeで解析する
 func (a Analyzer) tokenize(input string) []tokenizer.Token {
-	d, err := selectDict(a.SysDict)
-	if err != nil {
-		panic(err)
-	}
-	t, err := tokenizer.New(d, tokenizer.OmitBosEos())
+	t, err := tokenizer.New(a.SysDict, tokenizer.OmitBosEos())
 	if err != nil {
 		panic(err)
 	}
@@ -76,12 +72,16 @@ func prolongedSoundMarkVowelize(reading string) (returnReading string) {
 	return returnReading
 }
 
-// New は Analyzer を作る
-func New(sysdict string, isIgnored bool) *Analyzer {
-	return &Analyzer{
-		SysDict:   sysdict,
-		IsIgnored: isIgnored,
+// Deprecated: New は Analyzer を作る
+func New(sysdict string, isIgnored bool) (*Analyzer, error) {
+	d, err := selectDict(sysdict)
+	if err != nil {
+		return nil, err
 	}
+	return &Analyzer{
+		SysDict:   d,
+		IsIgnored: isIgnored,
+	}, nil
 }
 
 // Analyze は input がゴママヨか判定する
