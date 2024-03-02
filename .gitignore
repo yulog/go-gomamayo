@@ -50,3 +50,7 @@ goxz
 
 # gomamayo
 **/ignoreWord-db/*
+build.bat
+Taskfile.yml
+testdata/**
+**/ignoreWords.json
