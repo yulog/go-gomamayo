@@ -4,10 +4,6 @@ import (
 	"github.com/ikawaha/kagome-dict/dict"
 )
 
-// type Analyzer interface {
-// 	Analyze(string) gomamayo.GomamayoResult
-// }
-
 type Dict struct {
 	SysDict *dict.Dict
 	// Reading()はuni系だと使えないため、各辞書のconstから持って来て利用する

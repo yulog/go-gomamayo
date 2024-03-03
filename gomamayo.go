@@ -34,19 +34,6 @@ type GomamayoDetail struct {
 	RawResult2 tokenizer.TokenData `json:"rawResult2"`
 }
 
-// 辞書を選択する
-//
-// https://github.com/ikawaha/kagome/blob/v2/cmd/tokenize/cmd.go
-// func selectDict(sysdict string) (*dict.Dict, error) {
-// 	switch sysdict {
-// 	case "ipa":
-// 		return ipa.Dict(), nil
-// 	case "neo", "neologd":
-// 		return ipaneologd.Dict(), nil
-// 	}
-// 	return nil, fmt.Errorf("invalid dict name, %v", sysdict)
-// }
-
 // kagomeで解析する
 func (a Analyzer) tokenize(input string) []tokenizer.Token {
 	t, err := tokenizer.New(a.SysDict, tokenizer.OmitBosEos())
