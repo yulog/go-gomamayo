@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/yulog/go-gomamayo"
-	"github.com/yulog/go-gomamayo/dict/full"
 
 	"github.com/urfave/cli/v2"
 )
@@ -18,7 +17,7 @@ const version = "0.0.2"
 var revision = "HEAD"
 
 func doAnalyze(cCtx *cli.Context) error {
-	d, err := full.SelectDict(cCtx.String("sysdict"))
+	d, err := selectDict(cCtx.String("sysdict"))
 	if err != nil {
 		return err
 	}

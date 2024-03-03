@@ -98,6 +98,7 @@ func Cross() {
 	}
 	// v, _ := sh.Output("gobump", "show", "-r", "./cmd/gomamayo/")
 	sh.Run("goxz", "-n", BIN, "-pv=v"+VERSION, "./cmd/gomamayo/")
+	sh.Run("goxz", "-n", BIN+"_lite", "-pv=v"+VERSION, "-build-tags=lite", "./cmd/gomamayo/")
 }
 
 func Bump() {
