@@ -6,8 +6,19 @@
 形態素解析には[ikawaha/kagome](https://github.com/ikawaha/kagome)を使っています。  
 辞書にはIPADIC、NEologd、unidic、unidic3を使えます。
 
+## Releases
+
+ダウンロードは[こちら](https://github.com/yulog/go-gomamayo/releases)から
+
+### 通常版
+
 > [!WARNING]
 > 辞書を含むためファイルサイズが大きいです。(700MB+)
+
+### Lite版
+
+> [!NOTE]
+> IPADICとunidicのみ含みます。(60MB+)
 
 ## Library
 
