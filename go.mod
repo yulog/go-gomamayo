@@ -8,9 +8,9 @@ require (
 	github.com/goark/krconv v0.2.3
 	github.com/ikawaha/kagome-dict/ipa v1.2.0
 	github.com/ikawaha/kagome-dict/uni v1.2.0
-	github.com/ikawaha/kagome/v2 v2.9.11
+	github.com/ikawaha/kagome/v2 v2.10.0
 	github.com/ostafen/clover/v2 v2.0.0-alpha.3
-	github.com/urfave/cli/v2 v2.27.2
+	github.com/urfave/cli/v2 v2.27.3
 )
 
 require github.com/ikawaha/kagome-dict-uni3 v0.0.2
@@ -43,8 +43,8 @@ require (
 	github.com/xrash/smetrics v0.0.0-20240521201337-686a1a2994c1 // indirect
 	go.etcd.io/bbolt v1.3.10 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/net v0.27.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/net v0.28.0 // indirect
+	golang.org/x/sys v0.24.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
