@@ -103,7 +103,7 @@ func (a Analyzer) Analyze(input string) (gomamayoResult GomamayoResult) {
 		vowelizedReading = append(vowelizedReading, reading)
 	}
 
-	for i := 0; i < len(tokens)-1; i++ {
+	for i := range len(tokens) - 1 {
 		first := tokens[i]
 		second := tokens[i+1]
 

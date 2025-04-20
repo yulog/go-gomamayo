@@ -1,16 +1,16 @@
 module github.com/yulog/go-gomamayo
 
-go 1.23
+go 1.24
 
-toolchain go1.23.4
+toolchain go1.24.2
 
 require (
 	github.com/goark/krconv v0.2.3
-	github.com/ikawaha/kagome-dict/ipa v1.2.0
-	github.com/ikawaha/kagome-dict/uni v1.2.0
-	github.com/ikawaha/kagome/v2 v2.10.0
+	github.com/ikawaha/kagome-dict/ipa v1.2.5
+	github.com/ikawaha/kagome-dict/uni v1.2.5
+	github.com/ikawaha/kagome/v2 v2.10.2
 	github.com/ostafen/clover/v2 v2.0.0-alpha.3
-	github.com/urfave/cli/v2 v2.27.5
+	github.com/urfave/cli/v2 v2.27.6
 )
 
 require github.com/ikawaha/kagome-dict-uni3 v0.0.2
@@ -31,7 +31,7 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/orderedcode v0.0.1 // indirect
-	github.com/ikawaha/kagome-dict v1.1.0
+	github.com/ikawaha/kagome-dict v1.1.6
 	github.com/ikawaha/kagome-dict-ipa-neologd v0.3.2
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/magefile/mage v1.15.0
@@ -46,6 +46,6 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/net v0.32.0 // indirect
 	golang.org/x/sys v0.28.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/text v0.23.0 // indirect
 	google.golang.org/protobuf v1.35.2 // indirect
 )
