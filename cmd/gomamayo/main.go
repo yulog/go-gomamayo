@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/yulog/go-gomamayo"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 const name = "gomamayo"
@@ -16,12 +17,12 @@ const version = "0.0.4"
 
 var revision = "HEAD"
 
-func doAnalyze(cCtx *cli.Context) error {
-	d, err := selectDict(cCtx.String("sysdict"))
+func doAnalyze(ctx context.Context, cmd *cli.Command) error {
+	d, err := selectDict(cmd.String("sysdict"))
 	if err != nil {
 		return err
 	}
-	r := gomamayo.New(d, !cCtx.Bool("disable-ignore")).Analyze(cCtx.Args().First())
+	r := gomamayo.New(d, !cmd.Bool("disable-ignore")).Analyze(cmd.Args().First())
 	// fmt.Printf("%+v\n", r)
 	obj, err := json.Marshal(r)
 	if err != nil {
@@ -31,18 +32,18 @@ func doAnalyze(cCtx *cli.Context) error {
 	return nil
 }
 
-func doAddIgnore(cCtx *cli.Context) error {
-	err := gomamayo.AddIgnoreWord(cCtx.Args().First())
+func doAddIgnore(ctx context.Context, cmd *cli.Command) error {
+	err := gomamayo.AddIgnoreWord(cmd.Args().First())
 	if err != nil {
 		return err
 	}
-	fmt.Println("Add ignore word:", cCtx.Args().First())
+	fmt.Println("Add ignore word:", cmd.Args().First())
 
 	return nil
 }
 
-func doRemoveIgnore(cCtx *cli.Context) error {
-	if cCtx.Bool("all") {
+func doRemoveIgnore(ctx context.Context, cmd *cli.Command) error {
+	if cmd.Bool("all") {
 		err := gomamayo.RemoveAllIgnoreWords()
 		if err != nil {
 			return err
@@ -51,16 +52,16 @@ func doRemoveIgnore(cCtx *cli.Context) error {
 		return nil
 	}
 
-	err := gomamayo.RemoveIgnoreWord(cCtx.Args().First())
+	err := gomamayo.RemoveIgnoreWord(cmd.Args().First())
 	if err != nil {
 		return err
 	}
-	fmt.Println("Remove ignore word:", cCtx.Args().First())
+	fmt.Println("Remove ignore word:", cmd.Args().First())
 
 	return nil
 }
 
-func doListIgnore(cCtx *cli.Context) error {
+func doListIgnore(ctx context.Context, cmd *cli.Command) error {
 	err := gomamayo.ListIgnoreWords(os.Stdout)
 	if err != nil {
 		return err
@@ -69,8 +70,8 @@ func doListIgnore(cCtx *cli.Context) error {
 	return nil
 }
 
-func doImportIgnore(cCtx *cli.Context) error {
-	err := gomamayo.ImportIgnoreWords(cCtx.Args().First())
+func doImportIgnore(ctx context.Context, cmd *cli.Command) error {
+	err := gomamayo.ImportIgnoreWords(cmd.Args().First())
 	if err != nil {
 		return err
 	}
@@ -79,8 +80,8 @@ func doImportIgnore(cCtx *cli.Context) error {
 	return nil
 }
 
-func doExportIgnore(cCtx *cli.Context) error {
-	err := gomamayo.ExportIgnoreWords(cCtx.Args().First())
+func doExportIgnore(ctx context.Context, cmd *cli.Command) error {
+	err := gomamayo.ExportIgnoreWords(cmd.Args().First())
 	if err != nil {
 		return err
 	}
@@ -90,7 +91,7 @@ func doExportIgnore(cCtx *cli.Context) error {
 }
 
 func main() {
-	app := &cli.App{
+	cmd := &cli.Command{
 		Name:        "gomamayo",
 		Usage:       "gomamayo analyzer",
 		Description: "gomamayo analyzer",
@@ -116,7 +117,7 @@ func main() {
 				Name:    "ignoreWord",
 				Aliases: []string{"ignore"},
 				Usage:   "operations for ignore word",
-				Subcommands: []*cli.Command{
+				Commands: []*cli.Command{
 					{
 						Name:    "add",
 						Aliases: []string{"a"},
@@ -158,7 +159,7 @@ func main() {
 		},
 	}
 
-	if err := app.Run(os.Args); err != nil {
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
