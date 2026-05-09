@@ -30,7 +30,7 @@ require (
 	github.com/ikawaha/kagome-dict v1.1.7
 	github.com/ikawaha/kagome-dict-ipa-neologd v0.3.2
 	github.com/klauspost/compress v1.17.11 // indirect
-	github.com/magefile/mage v1.15.0
+	github.com/magefile/mage v1.17.2
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/urfave/cli/v3 v3.8.0
